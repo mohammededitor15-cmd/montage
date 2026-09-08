@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>منتدى الطلاب | كورس المونتاج بالذكاء الاصطناعي</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #0066FF;
+            --primary-dark: #0052cc;
+            --primary-accent: #38bdf8;
+            --primary-light: #e0f2fe;
+            --bg-gradient: linear-gradient(180deg, #f8fbff 0%, #f0f7ff 100%);
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --border-light: #bae6fd;
+            --success: #10b981;
+            --danger: #ef4444;
+            --shadow-card: 0 10px 30px rgba(0, 102, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ─── Dark Mode ─── */
+        body.dark-mode {
+            --bg-gradient: linear-gradient(180deg, #0a0f1e 0%, #0d1526 100%);
+            --card-bg: #111827;
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: #1e3a5f;
+            --border-light: #1e3a5f;
+            --primary-light: #0c2340;
+        }
+
+        /* Header */
+        .forum-header {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-color);
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+        body.dark-mode .forum-header { background: rgba(10, 15, 30, 0.92); }
+
+        .header-inner {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary-accent), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.95rem;
+        }
+
+        .header-actions { display: flex; align-items: center; gap: 10px; }
+
+        .back-link {
+            text-decoration: none;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .back-link:hover { color: var(--primary); }
+
+        .theme-toggle-btn {
+            background: none;
+            border: 2px solid var(--border-color);
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            cursor: pointer;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Main */
+        .forum-main {
+            flex: 1;
+            max-width: 720px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 24px 20px 60px;
+        }
+
+        .forum-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .forum-subtitle {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin-bottom: 22px;
+        }
+
+        /* Composer */
+        .composer-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-light);
+            border-radius: 20px;
+            padding: 18px;
+            box-shadow: var(--shadow-card);
+            margin-bottom: 26px;
+        }
+
+        .composer-user {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-weight: 800;
+            font-size: 0.92rem;
+            color: var(--primary-dark);
+        }
+        .composer-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-accent), var(--primary));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.95rem;
+        }
+
+        .composer-textarea {
+            width: 100%;
+            min-height: 80px;
+            resize: vertical;
+            border: 1.5px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px 14px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text-main);
+            background: transparent;
+        }
+        .composer-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(0, 102, 255, 0.1);
+        }
+
+        .attachment-previews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+        .attachment-chip {
+            position: relative;
+            border: 1.5px solid var(--border-light);
+            border-radius: 12px;
+            overflow: hidden;
+            background: var(--primary-light);
+        }
+        .attachment-chip img,
+        .attachment-chip video {
+            display: block;
+            max-height: 110px;
+            max-width: 160px;
+        }
+        .attachment-chip .file-label {
+            padding: 8px 12px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--primary-dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .attachment-remove {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(15, 23, 42, 0.7);
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .composer-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 14px;
+        }
+
+        .attach-buttons { display: flex; gap: 8px; }
+
+        .attach-btn {
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            border: 1.5px solid var(--border-light);
+            border-radius: 50px;
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .attach-btn:hover { background: var(--primary-accent); color: #fff; }
+
+        .btn-send {
+            background: linear-gradient(135deg, var(--primary-accent), var(--primary));
+            color: #fff;
+            border: none;
+            border-radius: 50px;
+            padding: 10px 22px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-send:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .composer-hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+        }
+
+        .composer-alert {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            padding: 10px 14px;
+            border-radius: 12px;
+            display: none;
+        }
+        .composer-alert.error { display: block; background: #fef2f2; color: #991b1b; border: 1px solid #fca5a5; }
+        .composer-alert.success { display: block; background: #ecfdf5; color: #065f46; border: 1px solid #6ee7b7; }
+
+        /* Login prompt */
+        .login-prompt {
+            background: var(--card-bg);
+            border: 1.5px dashed var(--border-light);
+            border-radius: 20px;
+            padding: 26px 20px;
+            text-align: center;
+            margin-bottom: 26px;
+        }
+        .login-prompt i { font-size: 1.8rem; color: var(--primary); margin-bottom: 10px; }
+        .login-prompt p { color: var(--text-muted); margin: 8px 0 16px; font-size: 0.92rem; }
+        .login-prompt a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: linear-gradient(135deg, var(--primary-accent), var(--primary));
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 22px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.9rem;
+        }
+
+        /* Feed */
+        .feed-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+        .feed-count { color: var(--text-muted); font-size: 0.85rem; font-weight: 700; }
+        .btn-refresh {
+            background: none;
+            border: 1.5px solid var(--border-color);
+            border-radius: 50px;
+            padding: 6px 14px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--primary);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .message-card {
+            background: var(--card-bg);
+            border: 1.5px solid var(--border-color);
+            border-radius: 18px;
+            padding: 16px;
+            margin-bottom: 14px;
+        }
+
+        .message-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .message-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-accent), var(--primary));
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.95rem;
+            flex-shrink: 0;
+        }
+
+        .message-name { font-weight: 800; font-size: 0.92rem; }
+        .message-time { color: var(--text-muted); font-size: 0.78rem; }
+
+        .message-delete {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            font-size: 0.95rem;
+            padding: 6px;
+        }
+        .message-delete:hover { color: var(--danger); }
+
+        .message-text {
+            font-size: 0.95rem;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin-bottom: 8px;
+        }
+
+        .message-media img,
+        .message-media video {
+            width: 100%;
+            max-height: 420px;
+            object-fit: contain;
+            border-radius: 14px;
+            background: #000;
+            display: block;
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        .empty-state, .loading-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 10px;
+            font-size: 0.92rem;
+        }
+        .empty-state i, .loading-state i { font-size: 1.8rem; display: block; margin-bottom: 10px; color: var(--primary-accent); }
+
+        /* Lightbox */
+        .lightbox-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            padding: 20px;
+        }
+        .lightbox-overlay.open { display: flex; }
+        .lightbox-overlay img { max-width: 100%; max-height: 90vh; border-radius: 10px; }
+        .lightbox-close {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            background: rgba(255,255,255,0.15);
+            border: none;
+            color: #fff;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        @media (max-width: 600px) {
+            .attachment-chip img, .attachment-chip video { max-width: 120px; }
+        }
+    </style>
+    <script src="site-theme.js" defer></script>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="forum-header">
+        <div class="header-inner">
+            <a href="index.html" class="header-logo">
+                <div class="logo-box"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <span>منتدى الطلاب</span>
+            </a>
+            <div class="header-actions">
+                <button type="button" class="theme-toggle-btn" onclick="toggleTheme()" title="تبديل الوضع المظلم">
+                    <i class="fa-solid fa-moon" id="themeIcon"></i>
+                </button>
+                <a href="index.html" class="back-link">
+                    <i class="fa-solid fa-arrow-right"></i>
+                    <span>الرئيسية</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main -->
+    <main class="forum-main">
+        <h1 class="forum-title"><i class="fa-solid fa-comments" style="color:var(--primary);"></i> منتدى الطلاب</h1>
+        <p class="forum-subtitle">شارك أسئلتك، أعمالك، ولقطات الشاشة مع باقي الطلاب — نصوص، صور، وفيديوهات.</p>
+
+        <!-- Composer (يظهر فقط للمسجلين دخول) -->
+        <div class="composer-card" id="composerCard" style="display:none;">
+            <div class="composer-user">
+                <div class="composer-avatar" id="composerAvatar">?</div>
+                <span id="composerName">—</span>
+            </div>
+            <textarea class="composer-textarea" id="messageText" placeholder="اكتب رسالتك هنا... (اختياري لو هترفق صورة أو فيديو)"></textarea>
+
+            <div class="attachment-previews" id="attachmentPreviews"></div>
+
+            <div class="composer-toolbar">
+                <div class="attach-buttons">
+                    <button type="button" class="attach-btn" onclick="document.getElementById('imageInput').click()">
+                        <i class="fa-regular fa-image"></i> صورة
+                    </button>
+                    <button type="button" class="attach-btn" onclick="document.getElementById('videoInput').click()">
+                        <i class="fa-solid fa-video"></i> فيديو
+                    </button>
+                    <input type="file" id="imageInput" accept="image/*" style="display:none;" onchange="handleFileSelect(this, 'image')">
+                    <input type="file" id="videoInput" accept="video/*" style="display:none;" onchange="handleFileSelect(this, 'video')">
+                </div>
+                <button type="button" class="btn-send" id="sendBtn" onclick="submitMessage()">
+                    <i class="fa-solid fa-paper-plane"></i> <span>نشر</span>
+                </button>
+            </div>
+
+            <div class="composer-hint">الحد الأقصى: صورة حتى 8 ميجابايت، وفيديو حتى 60 ميجابايت.</div>
+            <div class="composer-alert" id="composerAlert"></div>
+        </div>
+
+        <!-- Login prompt (يظهر فقط لغير المسجلين) -->
+        <div class="login-prompt" id="loginPrompt" style="display:none;">
+            <i class="fa-solid fa-lock"></i>
+            <h3>سجّل دخولك للمشاركة</h3>
+            <p>يمكنك تصفح رسائل المنتدى بحرية، لكن لازم تسجّل الدخول أولاً لو حابب تكتب رسالة أو ترفق صورة/فيديو.</p>
+            <a href="auth.html"><i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول</a>
+        </div>
+
+        <!-- Feed -->
+        <div class="feed-toolbar">
+            <span class="feed-count" id="feedCount">جاري التحميل...</span>
+            <button type="button" class="btn-refresh" onclick="loadMessages()">
+                <i class="fa-solid fa-rotate"></i> تحديث
+            </button>
+        </div>
+
+        <div id="feedContainer">
+            <div class="loading-state"><i class="fa-solid fa-circle-notch fa-spin"></i> جاري تحميل الرسائل...</div>
+        </div>
+    </main>
+
+    <!-- Lightbox -->
+    <div class="lightbox-overlay" id="lightboxOverlay" onclick="closeLightbox()">
+        <button class="lightbox-close" onclick="closeLightbox(event)"><i class="fa-solid fa-xmark"></i></button>
+        <img id="lightboxImg" src="" alt="">
+    </div>
+
+    <script>
+        const API_URL = 'forum_api.php';
+        let currentUser = null;
+        let selectedImage = null;
+        let selectedVideo = null;
+        let pollTimer = null;
+
+        function getCurrentUser() {
+            try {
+                return JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || 'null');
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function initials(name) {
+            if (!name) return '?';
+            const parts = name.trim().split(/\s+/);
+            return (parts[0][0] || '?').toUpperCase();
+        }
+
+        function initUserState() {
+            currentUser = getCurrentUser();
+            const composer = document.getElementById('composerCard');
+            const loginPrompt = document.getElementById('loginPrompt');
+
+            if (currentUser && currentUser.email) {
+                composer.style.display = 'block';
+                loginPrompt.style.display = 'none';
+                document.getElementById('composerName').innerText = currentUser.name || currentUser.email;
+                document.getElementById('composerAvatar').innerText = initials(currentUser.name || currentUser.email);
+            } else {
+                composer.style.display = 'none';
+                loginPrompt.style.display = 'block';
+            }
+        }
+
+        // ─── اختيار المرفقات ───
+        function handleFileSelect(input, type) {
+            const file = input.files[0];
+            if (!file) return;
+
+            if (type === 'image') selectedImage = file;
+            else selectedVideo = file;
+
+            renderAttachmentPreviews();
+        }
+
+        function removeAttachment(type) {
+            if (type === 'image') { selectedImage = null; document.getElementById('imageInput').value = ''; }
+            else { selectedVideo = null; document.getElementById('videoInput').value = ''; }
+            renderAttachmentPreviews();
+        }
+
+        function renderAttachmentPreviews() {
+            const box = document.getElementById('attachmentPreviews');
+            box.innerHTML = '';
+
+            if (selectedImage) {
+                const url = URL.createObjectURL(selectedImage);
+                box.innerHTML += `
+                    <div class="attachment-chip">
+                        <button type="button" class="attachment-remove" onclick="removeAttachment('image')"><i class="fa-solid fa-xmark"></i></button>
+                        <img src="${url}" alt="معاينة الصورة">
+                    </div>`;
+            }
+            if (selectedVideo) {
+                const url = URL.createObjectURL(selectedVideo);
+                box.innerHTML += `
+                    <div class="attachment-chip">
+                        <button type="button" class="attachment-remove" onclick="removeAttachment('video')"><i class="fa-solid fa-xmark"></i></button>
+                        <video src="${url}" muted></video>
+                    </div>`;
+            }
+        }
+
+        function showComposerAlert(type, msg) {
+            const el = document.getElementById('composerAlert');
+            el.className = `composer-alert ${type}`;
+            el.innerText = msg;
+        }
+        function hideComposerAlert() {
+            document.getElementById('composerAlert').className = 'composer-alert';
+        }
+
+        // ─── إرسال الرسالة ───
+        async function submitMessage() {
+            if (!currentUser || !currentUser.email) return;
+            hideComposerAlert();
+
+            const text = document.getElementById('messageText').value.trim();
+            if (!text && !selectedImage && !selectedVideo) {
+                showComposerAlert('error', 'اكتب رسالة أو أرفق صورة/فيديو قبل الإرسال');
+                return;
+            }
+
+            const btn = document.getElementById('sendBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> جاري النشر...';
+
+            const formData = new FormData();
+            formData.append('name', currentUser.name || currentUser.email);
+            formData.append('email', currentUser.email);
+            formData.append('text', text);
+            if (selectedImage) formData.append('image', selectedImage);
+            if (selectedVideo) formData.append('video', selectedVideo);
+
+            try {
+                const res = await fetch(`${API_URL}?action=post`, { method: 'POST', body: formData });
+                const data = await res.json();
+
+                if (data.status) {
+                    document.getElementById('messageText').value = '';
+                    selectedImage = null;
+                    selectedVideo = null;
+                    document.getElementById('imageInput').value = '';
+                    document.getElementById('videoInput').value = '';
+                    renderAttachmentPreviews();
+                    loadMessages();
+                } else {
+                    showComposerAlert('error', data.message || 'تعذر نشر الرسالة، حاول مرة أخرى');
+                }
+            } catch (e) {
+                showComposerAlert('error', 'حدث خطأ في الاتصال بالسيرفر');
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> <span>نشر</span>';
+            }
+        }
+
+        // ─── تحميل وعرض الرسائل ───
+        async function loadMessages() {
+            const container = document.getElementById('feedContainer');
+            try {
+                const res = await fetch(`${API_URL}?action=list`);
+                const data = await res.json();
+
+                if (!data.status) {
+                    container.innerHTML = `<div class="empty-state"><i class="fa-solid fa-triangle-exclamation"></i> تعذر تحميل الرسائل</div>`;
+                    return;
+                }
+
+                const messages = data.messages || [];
+                document.getElementById('feedCount').innerText = `${messages.length} رسالة`;
+
+                if (messages.length === 0) {
+                    container.innerHTML = `<div class="empty-state"><i class="fa-regular fa-comments"></i> لا توجد رسائل بعد، كن أول من يشارك!</div>`;
+                    return;
+                }
+
+                container.innerHTML = messages.map(renderMessageCard).join('');
+            } catch (e) {
+                container.innerHTML = `<div class="empty-state"><i class="fa-solid fa-wifi"></i> تعذر الاتصال بالسيرفر</div>`;
+            }
+        }
+
+        function renderMessageCard(m) {
+            const isOwner = currentUser && currentUser.email && currentUser.email.toLowerCase() === (m.email || '').toLowerCase();
+            const safeName = escapeHtml(m.name || 'طالب');
+            const safeText = escapeHtml(m.text || '');
+
+            let mediaHtml = '';
+            if (m.image_url) {
+                mediaHtml += `<div class="message-media"><img src="${m.image_url}" alt="صورة مرفقة" onclick="openLightbox('${m.image_url}')" loading="lazy"></div>`;
+            }
+            if (m.video_url) {
+                mediaHtml += `<div class="message-media"><video src="${m.video_url}" controls preload="metadata"></video></div>`;
+            }
+
+            return `
+                <div class="message-card">
+                    <div class="message-head">
+                        <div class="message-author">
+                            <div class="message-avatar">${initials(m.name)}</div>
+                            <div>
+                                <div class="message-name">${safeName}</div>
+                                <div class="message-time">${formatTime(m.timestamp)}</div>
+                            </div>
+                        </div>
+                        ${isOwner ? `<button type="button" class="message-delete" onclick="deleteMessage(${m.id})" title="حذف الرسالة"><i class="fa-solid fa-trash"></i></button>` : ''}
+                    </div>
+                    ${safeText ? `<div class="message-text">${safeText}</div>` : ''}
+                    ${mediaHtml}
+                </div>`;
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.innerText = str;
+            return div.innerHTML;
+        }
+
+        function formatTime(unixTs) {
+            if (!unixTs) return '';
+            const diffSec = Math.floor(Date.now() / 1000) - unixTs;
+            if (diffSec < 60) return 'الآن';
+            if (diffSec < 3600) return `منذ ${Math.floor(diffSec / 60)} دقيقة`;
+            if (diffSec < 86400) return `منذ ${Math.floor(diffSec / 3600)} ساعة`;
+            if (diffSec < 604800) return `منذ ${Math.floor(diffSec / 86400)} يوم`;
+            const d = new Date(unixTs * 1000);
+            return d.toLocaleDateString('ar-EG', { day: 'numeric', month: 'short', year: 'numeric' });
+        }
+
+        // ─── حذف رسالة ───
+        async function deleteMessage(id) {
+            if (!currentUser || !currentUser.email) return;
+            if (!confirm('هل أنت متأكد من حذف هذه الرسالة؟')) return;
+
+            try {
+                const res = await fetch(`${API_URL}?action=delete`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id, email: currentUser.email })
+                });
+                const data = await res.json();
+                if (data.status) {
+                    loadMessages();
+                } else {
+                    alert(data.message || 'تعذر حذف الرسالة');
+                }
+            } catch (e) {
+                alert('حدث خطأ في الاتصال بالسيرفر');
+            }
+        }
+
+        // ─── Lightbox لعرض الصور بحجم كامل ───
+        function openLightbox(url) {
+            document.getElementById('lightboxImg').src = url;
+            document.getElementById('lightboxOverlay').classList.add('open');
+        }
+        function closeLightbox(event) {
+            if (event) event.stopPropagation();
+            document.getElementById('lightboxOverlay').classList.remove('open');
+        }
+
+        // ─── الوضع المظلم ───
+        function initTheme() {
+            if (localStorage.getItem('site_theme') === 'dark') {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeIcon').classList.replace('fa-moon', 'fa-sun');
+            }
+        }
+        function toggleTheme() {
+            const isDark = document.body.classList.toggle('dark-mode');
+            localStorage.setItem('site_theme', isDark ? 'dark' : 'light');
+            const icon = document.getElementById('themeIcon');
+            icon.className = isDark ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+        }
+
+        // ─── تهيئة الصفحة ───
+        initTheme();
+        initUserState();
+        loadMessages();
+
+        // تحديث تلقائي كل 15 ثانية لعرض الرسائل الجديدة من الطلاب الآخرين
+        pollTimer = setInterval(loadMessages, 15000);
+    </script>
+</body>
+</html>
